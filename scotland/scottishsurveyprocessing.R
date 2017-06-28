@@ -24,10 +24,11 @@ clean.survey <- function(shcs){
   #These cases have a second extension with area and external perimeter
   #variables, but a missing ceiling height.These have been filled with the
   #standard height of 2.4m
-  shcs$N7_C[shcs$uprn_new == 4950999308] <- 2.4
-  shcs$N7_C[shcs$uprn_new == 3485528102] <- 2.4
-  shcs$N7_C[shcs$uprn_new == 9153471654] <- 2.4
-  
+  ##shcs$N7_C[shcs$uprn_new == 4950999308] <- 2.4
+  ##shcs$N7_C[shcs$uprn_new == 3485528102] <- 2.4
+  ##shcs$N7_C[shcs$uprn_new == 9153471654] <- 2.4
+  shcs$N7_C[!is.na(shcs$N7_A) & !is.na(shcs$N7_D) & is.na(shcs$N7_C)] <- 2.4
+    
   #This case is a flat comprised entirely of a room in roof, with two extensions
   #in order to correctly calculate the position of the extensions this variables
   #stored in the room in roof variables (N5_A and N5_C) are moved to those for level
