@@ -4,3 +4,4 @@
 **/*.pdf
 .RData
 .Rhistory
+.Rproj.user
