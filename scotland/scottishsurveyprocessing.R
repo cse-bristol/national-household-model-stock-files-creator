@@ -24,9 +24,6 @@ clean.survey <- function(shcs){
   #These cases have a second extension with area and external perimeter
   #variables, but a missing ceiling height.These have been filled with the
   #standard height of 2.4m
-  ##shcs$N7_C[shcs$uprn_new == 4950999308] <- 2.4
-  ##shcs$N7_C[shcs$uprn_new == 3485528102] <- 2.4
-  ##shcs$N7_C[shcs$uprn_new == 9153471654] <- 2.4
   shcs$N7_C[!is.na(shcs$N7_A) & !is.na(shcs$N7_D) & is.na(shcs$N7_C)] <- 2.4
     
   #This case is a flat comprised entirely of a room in roof, with two extensions
@@ -41,10 +38,8 @@ clean.survey <- function(shcs){
     (sqrt(shcs$N5_A[shcs$uprn_new == 8859831108]*dimension.ratio)+
        ((sqrt(shcs$N5_A[shcs$uprn_new == 8859831108]/dimension.ratio))*2))
   
-  #This case is missing level one external perimiter, this is replaced with a value
-  #(33) that was calculated from the area, using the assumption that length/width is
-  #1.5
-  shcs$N1_D[shcs$uprn_new == 460193204] <- 33
+  #Where a house case is missing an external permiter value for the ground/lowest floor assume value based on total floor area and building type
+  shcs$N1_D[shcs$N1_D == 888 & shcs$C2 == "4-in-a-block"] <- sqrt(subset(shcs,shcs$N1_D == 888 & shcs$C2 == "4-in-a-block")$N1_A)*4
   
   #This case is missing a value for the extent of primary wall. This has been set
   #to 10 as it is the most common extent in the survey data
