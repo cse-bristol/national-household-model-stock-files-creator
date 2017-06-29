@@ -43,8 +43,8 @@ clean.survey <- function(shcs){
   
   #This case is missing a value for the extent of primary wall. This has been set
   #to 10 as it is the most common extent in the survey data
-  shcs$Q10[shcs$uprn_new == 4196979699] <- 10 
-  
+  shcs$Q10[shcs$Q10 == 99] <- ceiling(mean(shcs$Q10,na.rm=T))
+    
   #The principal hot water heating source value for the following cases were
   #inconsistent with the other values of heating, they are changed here to values
   #that are both consistant and most common.
