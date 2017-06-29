@@ -47,23 +47,16 @@ clean.survey <- function(shcs){
     
   #The principal hot water heating source value for the following cases were
   #inconsistent with the other values of heating, they are changed here to values
-  #that are both consistant and most common.
-  shcs$M17[shcs$uprn_new==6379341481] <- "Room heater BB"
-  shcs$M17[shcs$uprn_new==1060005515] <- "Room heater BB"
-  shcs$M17[shcs$uprn_new==9472432770] <- "Room heater BB"
-  shcs$M17[shcs$uprn_new==7353370291] <- "Room heater BB"
-  shcs$M17[shcs$uprn_new==7950759180] <- "Elec immersion"
-  shcs$M17[shcs$uprn_new==2676458351] <- "Room heater BB"
-  shcs$M17[shcs$uprn_new==2177514151] <- "Room heater BB"
-  shcs$M17[shcs$uprn_new==1676502308] <- "Room heater BB"
-  shcs$M17[shcs$uprn_new==8873452423] <- "Room heater BB"
-  shcs$M17[shcs$uprn_new==5700173539] <- "Room heater BB"
+
+  ##Where Primary form of heating is Radiators and primary heating fuel is (wood, coal or gas) assume M17 is Room Heater rather than Mains Heating
+  shcs$M17[shcs$M2 %in% c("Room heater (bb no rads)","Room heater") & shcs$M17 == "Mains heating" & shcs$M5 %in% c("Wood logs","House coal","Gas (mains)")] <-"Room heater BB"
+  ##Where above but primary heating fuel is electric assume to be Elect immmersion rather than mains heating
+  shcs$M17[shcs$M2 %in% c("Room heater (bb no rads)","Room heater") & shcs$M17 == "Mains heating" & shcs$M5 %in% c("Peak electric")] <- "Elec immersion"
   
   #The water heating fuel value for the following case was set as unobtainable.
   #It has been changed to off-peak electric to match that of the spaceheating fuel.
   shcs$M18[shcs$uprn_new==7403106567] <- "Off-peak electric"
-  
-  
+    
   #The primary heating fuel in these two cases are changed to oil as the primary
   #heating fuel in the survey is "other" and the primary form of heating is a boiler
   shcs$M5[shcs$uprn_new == 6115831852] <- "Oil"
