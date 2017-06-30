@@ -54,8 +54,8 @@ clean.survey <- function(shcs){
   shcs$M17[shcs$M2 %in% c("Room heater (bb no rads)","Room heater") & shcs$M17 == "Mains heating" & shcs$M5 %in% c("Peak electric")] <- "Elec immersion"
   
   #The water heating fuel value for the following case was set as unobtainable.
-  #It has been changed to off-peak electric to match that of the spaceheating fuel.
-  shcs$M18[shcs$uprn_new==7403106567] <- "Off-peak electric"
+  #It has been changed to off-peak electric to match that of the spaceheating fuel as waterheating method is Elec immersion
+  shcs$M18[shcs$M5 == "Off-peak electric" & shcs$M18 == "Unobtainable" & shcs$M17 == "Elec immersion"] <- "Off-peak electric"
     
   #The primary heating fuel in these two cases are changed to oil as the primary
   #heating fuel in the survey is "other" and the primary form of heating is a boiler
