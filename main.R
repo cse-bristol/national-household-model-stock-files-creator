@@ -40,19 +40,16 @@ option.ehs.spaceheating.lookups <- c(
 )
 
 #' Whether to build the scotland stock - if false UK stock is not built
-option.scotland.build <- T
+option.scotland.build <- F
 
 #' Whether to build the english stock - if false UK stock is not built
 option.england.build <- T
 
 #' Whether to build the welsh stock - if false UK stock is not built
-option.wales.build <- T
+option.wales.build <- F
 
 #' Whether to document the stock creation process - if false documentation is not built
-option.documentation.build <- F
-
-#' Whether to document the stock creation process - if false documentation is not built
-option.documentation.build <- FALSE
+option.documentation.build <- T
 
 #' Whether to use the sedbuk lookup device
 option.ehs.spaceheating.sedbuk <- TRUE
