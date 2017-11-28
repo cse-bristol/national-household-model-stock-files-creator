@@ -150,7 +150,7 @@ test.cavitywallinsulation <- function(ehs, elevations) {
   test.xtab(
     ehs,
     elevations,
-    ehs$wallinsx,
+    ehs$wallinsy,
     paste(externalwalltype, "; Cavity Wall insulation: ", elevations$cavitywallinsulation, sep = ""))
 }
 
