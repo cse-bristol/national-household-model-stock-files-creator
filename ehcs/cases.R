@@ -88,13 +88,14 @@ cases.make <- function(allEntries) {
 #' Determine the rurality of each dwelling by recoding an existing variable
 #' 
 morphology.type.lookup <- function(rumorph){
-  as.factor(checked.revalue(
-    rumorph,c(
+  from.rumorph <- as.factor(checked.revalue(
+     rumorph,c(
       "hamlets and isolated dwellings" = "hamletsandisolateddwellings"
       ,"village" = "village"
       ,"town and fringe"= "townandfringe"
       ,"urban > 10k" = "urban"
-      )))
+               )))
+  ifelse(is.na(from.rumorph), "urban", as.character(from.rumorph))
 }
 
 
