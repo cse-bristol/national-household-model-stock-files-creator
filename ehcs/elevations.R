@@ -160,9 +160,9 @@ build.doors <- function(doorEntries){
     elevationtype = rep("FRONT", length(frontDoors_summmary$aacode)),
     "doorframe:wood,doortype:solid" = frontDoors_summmary$Wood,
     "doorframe:wood,doortype:glazed" = rep(0, length(frontDoors_summmary$aacode)),  
-    "doorframe:metal,doortype:solid" =  frontDoors_summmary$Metal,
+    "doorframe:metal,doortype:solid" = ifelse(is.na(frontDoors_summmary$Metal),0, frontDoors_summmary$Metal),
     "doorframe:metal,doortype:glazed" = rep(0, length(frontDoors_summmary$aacode)),	
-    "doorframe:upvc,doortype:solid" = frontDoors_summmary$UPVC,	
+    "doorframe:upvc,doortype:solid" = ifelse(is.na(frontDoors_summmary$UPVC),0,	frontDoors_summmary$UPVC),
     "doorframe:upvc,doortype:glazed"= rep(0, length(frontDoors_summmary$aacode)),
     check.names = FALSE
   )
@@ -175,9 +175,9 @@ build.doors <- function(doorEntries){
     elevationtype = rep("BACK", length(backDoors_summmary$aacode)),
     "doorframe:wood,doortype:solid" = backDoors_summmary$Wood,
     "doorframe:wood,doortype:glazed" = rep(0, length(backDoors_summmary$aacode)),  
-    "doorframe:metal,doortype:solid" = backDoors_summmary$Metal,
+    "doorframe:metal,doortype:solid" = ifelse(is.na(backDoors_summmary$Metal),0, backDoors_summmary$Metal),
     "doorframe:metal,doortype:glazed" = rep(0, length(backDoors_summmary$aacode)),	
-    "doorframe:upvc,doortype:solid" = backDoors_summmary$UPVC,	
+    "doorframe:upvc,doortype:solid" = ifelse(is.na(backDoors_summmary$UPVC),0, backDoors_summmary$UPVC),
     "doorframe:upvc,doortype:glazed"= rep(0, length(backDoors_summmary$aacode)),
     check.names = FALSE
   )
