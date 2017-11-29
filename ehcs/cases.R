@@ -364,15 +364,11 @@ cal.livingarea.data <- function(numOfHabitalRooms, livingRoomWidth,
   calc_livingRoomDepth <- ifelse(is.na(livingRoomDepth),0, livingRoomDepth)
   calc_livingRoomDepth <- ifelse(calc_livingRoomDepth == 88.8, 0, calc_livingRoomDepth)
   
-  calc_livingAreaFaction <- (livingRoomWidth * livingRoomDepth)/ totalFloorArea
-  
   calc_livingAreaFaction <- ifelse(totalFloorArea <= 0, 0, 
                           (calc_livingRoomWidth * calc_livingRoomDepth)/ totalFloorArea)
   
   data <- data.frame(
-    livingAreaFaction = 0, #calc_livingAreaFaction, # this is not deliberate, but instead a decision taken since
-    # there seems to be an error with the living area fraction calaculation and it won't run, sothis is a necessary step.
-    # it also aligns the stock better with BRE's pproach for LAF, but this isn't the reason I've done it here
+    livingAreaFaction = calc_livingAreaFaction,
     numHabitalRooms = ifelse(is.na(numOfHabitalRooms), 0, numOfHabitalRooms),
     numOfBedrooms = 0)
   
