@@ -158,7 +158,7 @@ build.doors <- function(doorEntries){
   frontElevations <- data.frame(
     aacode = frontDoors_summmary$aacode,
     elevationtype = rep("FRONT", length(frontDoors_summmary$aacode)),
-    "doorframe:wood,doortype:solid" = frontDoors_summmary$Wood,
+    "doorframe:wood,doortype:solid" = ifelse(is.na(frontDoors_summmary$Wood),0,frontDoors_summmary$Wood),
     "doorframe:wood,doortype:glazed" = rep(0, length(frontDoors_summmary$aacode)),  
     "doorframe:metal,doortype:solid" = ifelse(is.na(frontDoors_summmary$Metal),0, frontDoors_summmary$Metal),
     "doorframe:metal,doortype:glazed" = rep(0, length(frontDoors_summmary$aacode)),	
@@ -173,7 +173,7 @@ build.doors <- function(doorEntries){
   backElevations <- data.frame(
     aacode = backDoors_summmary$aacode,
     elevationtype = rep("BACK", length(backDoors_summmary$aacode)),
-    "doorframe:wood,doortype:solid" = backDoors_summmary$Wood,
+    "doorframe:wood,doortype:solid" = ifelse(is.na(backDoors_summmary$Wood),0,backDoors_summmary$Wood),
     "doorframe:wood,doortype:glazed" = rep(0, length(backDoors_summmary$aacode)),  
     "doorframe:metal,doortype:solid" = ifelse(is.na(backDoors_summmary$Metal),0, backDoors_summmary$Metal),
     "doorframe:metal,doortype:glazed" = rep(0, length(backDoors_summmary$aacode)),	
