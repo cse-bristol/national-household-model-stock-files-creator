@@ -75,6 +75,11 @@ source("DTO-import-files.R",chdir = T)
 #' 
 #' @param path.to.output - directory where output files are put
 make.scotland <- function(path.to.shcs, path.to.output) {
+  
+  # path.to.shcs <- file.path(getwd(), "data/SHCS_11-13/external_cse_data.sav")
+  # path.to.output <- file.path(outputs, "scotland")
+  # path.to.input <- dirname(file.path(getwd(), "data/SHCS_11-13/external_cse_data.sav"))
+
   #Load scottish survey data and preprocess some cases which have inconsistent
   #values i.e. an open fire fueled by electricity
   print(paste("Loading", path.to.shcs))

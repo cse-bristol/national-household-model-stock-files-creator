@@ -33,7 +33,7 @@ save.lighting <- function(shcs, output) {
 #' 
 #'@param shcs - the scottish survey data
 make.lighting <- function(shcs) {
-  the.lightingfraction <- lighting.fraction(shcs$L18)
+  the.lightingfraction <- lighting.fraction(as.numeric(as.character(shcs$L18)))
   
   data.frame(aacode = shcs$uprn_new,
              fraction = the.lightingfraction)

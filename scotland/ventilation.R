@@ -44,7 +44,7 @@ make.ventilation <- function(shcs) {
   #based on the extent of double glazing -  this is consistant with previous stock
   #creation and the option to apply as described below.
   the.windowsanddoorsdraughtstrippedproportion <- 
-    windows.anddoorsdraughtstrippedproportion(shcs$Q47) 
+    windows.anddoorsdraughtstrippedproportion(as.numeric(as.character(shcs$Q47)))
   
   data.frame(aacode = shcs$uprn_new
              ,chimneysmainheating = the.chimneysmainheating

@@ -75,7 +75,7 @@ make.elevations <- function(shcs) {
   elevations <- select(elevations,uprn_new,contains("front."),contains("left."),
                        contains("back."),contains("right."))
   elevations <- gather(elevations,key,value,-uprn_new)
-  elevations <- separate(elevations,variable,into=c("elevationtype","key"),sep="\\.")
+  elevations <- separate(elevations,key,into=c("elevationtype","key"),sep="\\.")
   elevations <- spread(elevations,key,value)
   
   #creates a dataframe containing column names (word before the = sign) and a vector
@@ -320,11 +320,11 @@ make.externalwallconstructiontype <- function(stock){
   # hence the majhority of the front elevations are assigned the primary wall details
   stock$numprimarywalls <-
     round2(((40-
-              (as.numeric(levels(stock$front.tenthsattached)[stock$front.tenthsattached])
-               +as.numeric(levels(stock$left.tenthsattached)[stock$left.tenthsattached])
-               +as.numeric(levels(stock$back.tenthsattached)[stock$back.tenthsattached])
-               +as.numeric(levels(stock$right.tenthsattached)[stock$right.tenthsattached])))
-           *stock$Q10)/100,0)
+              as.numeric(as.character(stock$front.tenthsattached))
+               + as.numeric(as.character(stock$left.tenthsattached))
+               + as.numeric(as.character(stock$back.tenthsattached))
+               + as.numeric(as.character(stock$right.tenthsattached)))
+           * stock$Q10)/100,0)
   
   return(stock) 
 }
@@ -540,36 +540,86 @@ wall.typeandinsulation <- function(stock,elevation){
 #' script, which is comprised of the scottish survey with additional columns
 make.tenthsopening <- function(stock){
   #Set all floors sizes that do not exist to a floor size of 0 for summation
-  #These should not be altered
-  stock$N1_A[stock$N1_A == 888] <- 0
-  stock$N2_A[stock$N2_A == 888] <- 0
-  stock$N2_A[stock$N2_A == 999] <- 0
-  stock$N3_A[stock$N3_A == 888] <- 0
-  stock$N4_A[stock$N4_A == 888] <- 0
-  stock$N5_A[stock$N5_A == 888] <- 0
-  stock$N6_A[stock$N6_A == 888] <- 0
-  stock$N7_A[stock$N7_A == 888] <- 0
   
-  #Set all heights that do not exist to a heights of 0 for summation
-  #These should not be altered
+  cols <- c("N1_A",
+            "N2_A",
+            "N3_A",
+            "N4_A",
+            "N5_A",
+            "N6_A",
+            "N7_A",
+            "N1_C",
+            "N2_C",
+            "N3_C",
+            "N4_C",
+            "N5_C",
+            "N6_C",
+            "N7_C",
+            "N7_A",
+            "N1_D",
+            "N2_D",
+            "N3_D",
+            "N4_D",
+            #"N5_D",
+            "N6_D",
+            "N7_D")
   
-  stock$N1_C[stock$N1_C == 8.8 | is.na(stock$N1_C) == "TRUE"] <- 0
-  stock$N2_C[stock$N2_C == 8.8 | stock$N2_C == 9.9 |is.na(stock$N2_C) == "TRUE"] <- 0
-  stock$N3_C[stock$N3_C == 8.8 | stock$N3_C == 9.9 |is.na(stock$N3_C) == "TRUE"] <- 0
-  stock$N4_C[stock$N4_C == 8.8 | stock$N4_C == 9.9 |is.na(stock$N4_C) == "TRUE"] <- 0
-  stock$N5_C[stock$N5_C == 8.8 | stock$N5_C == 9.9 |is.na(stock$N5_C) == "TRUE"] <- 0
-  stock$N6_C[stock$N6_C == 8.8 | stock$N6_C == 9.9 |is.na(stock$N6_C) == "TRUE"] <- 0
-  stock$N7_C[stock$N7_C == 8.8 | stock$N7_C == 9.9 |is.na(stock$N7_C) == "TRUE"] <- 0
+  stock <- stock %>% 
+    mutate_at(cols, funs(as.character(.)))
   
-  #Set all external perimeters that do not exist external perimeters of 0 for 
-  #summation
-  #These should not be altered
-  stock$N1_D[stock$N1_D == 888 | is.na(stock$N1_D) == "TRUE"] <- 0
-  stock$N2_D[stock$N2_D == 888 | stock$N2_D == 999 |is.na(stock$N2_D) == "TRUE"] <- 0
-  stock$N3_D[stock$N3_D == 888 | stock$N3_D == 999 |is.na(stock$N3_D) == "TRUE"] <- 0
-  stock$N4_D[stock$N4_D == 888 | stock$N4_D == 999 |is.na(stock$N4_D) == "TRUE"] <- 0
-  stock$N6_D[stock$N6_D == 888 | stock$N6_D == 999 |is.na(stock$N6_D) == "TRUE"] <- 0
-  stock$N7_D[stock$N7_D == 888 | stock$N7_D == 999 |is.na(stock$N7_D) == "TRUE"] <- 0
+  convert.NotApplicables.to.zeros <- function(x) {ifelse(x == "Not applicable", 0, x)}
+  convert.Unobtainables.to.zeros <- function(x) {ifelse(x == "Unobtainable", 0, x)}
+  convert.NAs.to.zeros <- function(x) {ifelse(is.na(x), 0, x)}
+  
+  stock <- stock %>% 
+    mutate_at(cols, funs(convert.NotApplicables.to.zeros(.)))
+  
+  stock <- stock %>% 
+    mutate_at(cols, funs(convert.Unobtainables.to.zeros(.)))
+  
+  stock <- stock %>% 
+    mutate_at(cols, funs(convert.NAs.to.zeros(.)))
+  
+  #convert all these to numeric
+  stock <- stock %>% 
+    mutate_at(cols, funs(as.numeric(.)))
+  
+  
+  #### from here is old ### above converts this ###
+  
+  # #These should not be altered
+  # stock$N1_A[stock$N1_A == 888] <- 0
+  # stock$N2_A[stock$N2_A == 888] <- 0
+  # stock$N2_A[stock$N2_A == 999] <- 0
+  # stock$N3_A[stock$N3_A == 888] <- 0
+  # stock$N4_A[stock$N4_A == 888] <- 0
+  # stock$N5_A[stock$N5_A == 888] <- 0
+  # stock$N6_A[stock$N6_A == 888] <- 0
+  # stock$N7_A[stock$N7_A == 888] <- 0
+  # 
+  # #Set all heights that do not exist to a heights of 0 for summation
+  # #These should not be altered
+  # 
+  # stock$N1_C[stock$N1_C == 8.8 | is.na(stock$N1_C) == "TRUE"] <- 0
+  # stock$N2_C[stock$N2_C == 8.8 | stock$N2_C == 9.9 |is.na(stock$N2_C) == "TRUE"] <- 0
+  # stock$N3_C[stock$N3_C == 8.8 | stock$N3_C == 9.9 |is.na(stock$N3_C) == "TRUE"] <- 0
+  # stock$N4_C[stock$N4_C == 8.8 | stock$N4_C == 9.9 |is.na(stock$N4_C) == "TRUE"] <- 0
+  # stock$N5_C[stock$N5_C == 8.8 | stock$N5_C == 9.9 |is.na(stock$N5_C) == "TRUE"] <- 0
+  # stock$N6_C[stock$N6_C == 8.8 | stock$N6_C == 9.9 |is.na(stock$N6_C) == "TRUE"] <- 0
+  # stock$N7_C[stock$N7_C == 8.8 | stock$N7_C == 9.9 |is.na(stock$N7_C) == "TRUE"] <- 0
+  # 
+  # #Set all external perimeters that do not exist external perimeters of 0 for 
+  # #summation
+  # #These should not be altered
+  # stock$N1_D[stock$N1_D == 888 | is.na(stock$N1_D) == "TRUE"] <- 0
+  # stock$N2_D[stock$N2_D == 888 | stock$N2_D == 999 |is.na(stock$N2_D) == "TRUE"] <- 0
+  # stock$N3_D[stock$N3_D == 888 | stock$N3_D == 999 |is.na(stock$N3_D) == "TRUE"] <- 0
+  # stock$N4_D[stock$N4_D == 888 | stock$N4_D == 999 |is.na(stock$N4_D) == "TRUE"] <- 0
+  # stock$N6_D[stock$N6_D == 888 | stock$N6_D == 999 |is.na(stock$N6_D) == "TRUE"] <- 0
+  # stock$N7_D[stock$N7_D == 888 | stock$N7_D == 999 |is.na(stock$N7_D) == "TRUE"] <- 0
+  
+  #### this is the end of the old ###
+  
   
   #Calculate the number of floors that the dimensions from the level3 and higher
   #columns need to be replicated for.

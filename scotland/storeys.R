@@ -89,12 +89,17 @@ make.polypointsandceilingheights <- function(shcs){
                                     ,N6_A,N6_C
                                     ,N7_A,N7_C))
   storeys <- gather(storeys,key,value,-uprn_new)
-  storeys <- separate(storeys,variable,into = c("floor","dimension"),sep="_")
+  storeys <- separate(storeys,key,into = c("floor","dimension"),sep="_")
   storeys <- spread(storeys,dimension,value)
   
   #If data is not applicable or unobtainable then set dimensions to zero
-  storeys$A[storeys$A== 888 | storeys$A == 999 | is.na(storeys$A) == "TRUE"] <- 0
-  storeys$C[storeys$C == 8.8 | storeys$C == 9.9| is.na(storeys$C) == "TRUE"] <- 0
+  storeys$A[storeys$A== "Not applicable" | storeys$A == "Unobtainable" | is.na(storeys$A)] <- "0"
+  storeys$C[storeys$C == "Not applicable" | storeys$C == "Unobtainable" | is.na(storeys$C)] <- "0"
+  
+  #convert to numeric from character
+  storeys$A <- as.numeric(storeys$A)
+  storeys$C <- as.numeric(storeys$C)
+  
   
   #To calculate the perimeter from the area the ratio of length to width must be set
   #This value has been based on common ratios of length to width in houses (i.e the 
@@ -274,7 +279,7 @@ assigning.polypointsandceilingheights <- function(shcs,storeys){
   floortype <- subset(floortype,select = c(uprn_new,J4,lvl.1,lvl.2,lvl.3
                                            ,lvl.4,lvl.5))
   floortype <- gather(floortype,key,type,-uprn_new, -J4)
-  floortype <- separate(floortype,variable,into=c("key","floor"))
+  floortype <- separate(floortype,key,into=c("key","floor"))
   names(floortype) [5] <- "type"
   
   floortype <- subset(floortype,select = c(uprn_new,floor,type,J4))
@@ -313,3 +318,4 @@ make.storeyheight <- function(storeys){
     storeys$ceilingheight[storeys$type != "ground" & storeys$type != "basement"] + 0.25
   return(storeys)
 }
+

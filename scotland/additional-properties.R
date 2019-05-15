@@ -46,12 +46,12 @@ make.additionalproperties <- function(shcs) {
   #to fill that column (vector after the = sign)
     shcs.findisty <- get.findisty(shcs$M3) 
     shcs.hhcompx <- get.hhcompx(shcs$hhtype)
-    shcs.dblglaz4 <- get.dblglaz4(shcs$Q47)
-    shcs.wallinsx <- get.wallinsx(shcs$Q2, shcs$Q8, shcs$Q10, shcs$Q11, shcs$Q17)
-    shcs.Felcav <- get.Felcav(shcs$Q8, shcs$Q10, shcs$Q17)
-    shcs.Felext <- get.Felext(shcs$Q8, shcs$Q10, shcs$Q17)
-    shcs.Felpv <- get.Felpv(shcs$D8)
-    shcs.Felsol <- get.Felsol(shcs$D9)
+    #shcs.dblglaz4 <- get.dblglaz4(shcs$Q47)
+    #shcs.wallinsx <- get.wallinsx(shcs$Q2, shcs$Q8, shcs$Q10, shcs$Q11, shcs$Q17)
+    #shcs.Felcav <- get.Felcav(shcs$Q8, shcs$Q10, shcs$Q17)
+    #shcs.Felext <- get.Felext(shcs$Q8, shcs$Q10, shcs$Q17)
+    #shcs.Felpv <- get.Felpv(shcs$D8)
+    #shcs.Felsol <- get.Felsol(shcs$D9)
 
   data.frame(aacode = shcs$uprn_new,
             Farnatur = NA,
@@ -72,12 +72,12 @@ make.additionalproperties <- function(shcs) {
             Felsollf = NA,
             Felsolrf = NA,
             Felsolbf = NA,
-            Felcav_shcs = shcs.Felcav,
-            Felext_shcs = shcs.Felext,
-            Felpv_shcs = shcs.Felpv,
-            Felsol_shcs = shcs.Felsol,
+            #Felcav_shcs = shcs.Felcav,
+            #Felext_shcs = shcs.Felext,
+            #Felpv_shcs = shcs.Felpv,
+            #Felsol_shcs = shcs.Felsol,
             Findisty = shcs.findisty,
-            dblglaz4 = shcs.dblglaz4,
+            #dblglaz4 = shcs.dblglaz4,
             NRmsEHS = shcs$J1,
             NRms2a = NA,
             NRms4 = NA,
@@ -86,7 +86,7 @@ make.additionalproperties <- function(shcs) {
 			AWEligible = NA,	#CMT addedtoenale GB stock to knit together
             hhcompx = shcs.hhcompx,
             imd1010 = NA,
-            wallinsy = shcs.wallinsx, #CMT - replaced wallinsx with wallinsy, the equivalent variable in EHS2014 (to match England)
+            #wallinsy = shcs.wallinsx, #CMT - replaced wallinsx with wallinsy, the equivalent variable in EHS2014 (to match England)
             Felroofp = NA,
             CERTpriority = NA,
             FloorArea = NA, #CMT additional variable (to match England)

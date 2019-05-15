@@ -193,18 +193,15 @@ builtform.type <- function(buildingtype) {
 #' 
 #'@param N1E - N1_E ground/lowest level floor type column from Scottish survey
 grndfloor.type <- function(N1E, C4) {
-  floor <- as.factor(checked.revalue(
-                      N1E,
-                      c("Susp timber" = "suspendedtimber",
-                        "Susp not timber" = "solid",
-                        "Solid" = "solid",
-                        "Not applicable" = "solid",
-                        "Unobtainable" = "solid")))
-  
+  floor <- case_when(N1E == "Susp timber" ~ "suspendedtimber",
+                     N1E == "Susp not timber" ~ "solid",
+                     N1E == "Solid" ~ "solid",
+                     N1E == "Not applicable" ~ "solid",
+                     N1E == "Unobtainable" ~ "solid")
   
   floor <- ifelse(C4 <= 1929 & N1E == "Unobtainable", "suspendedtimber",
                   ifelse(C4 <= 1929 & N1E == "Not applicable", "suspendedtimber",
-                         levels(floor)[floor]))
+                         floor))
   
   return(floor)
   

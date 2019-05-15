@@ -43,10 +43,10 @@ option.ehs.spaceheating.lookups <- c(
 option.scotland.build <- T
 
 #' Whether to build the english stock - if false UK stock is not built
-option.england.build <- T
+option.england.build <- F
 
 #' Whether to build the welsh stock - if false UK stock is not built
-option.wales.build <- T
+option.wales.build <- F
 
 #' Whether to document the stock creation process - if false documentation is not built
 option.documentation.build <- F
@@ -66,11 +66,11 @@ option.generate.summaries <- FALSE
 
 #' Whether to scale the total floor area of the storeys produced for a house
 #' to match the EHS variable FloorArea from derived/dimensions.sav
-option.ehs.storeys.scale <- T
+option.ehs.storeys.scale <- F
 
 #' A string to prefix the name of stock files with
 #' Add a test in here so if we set scaled to TRUE it calls the stock Scaled, OTHERWISE calls it Unscaled
-option.stock.name.prefix <- "scaled-"
+option.stock.name.prefix <- "unscaled-"
 
 imputation.schema.path <- file.path(getwd(), "data", "imputation-schema.xlsx")
 

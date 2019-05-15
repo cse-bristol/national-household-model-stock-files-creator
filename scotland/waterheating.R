@@ -93,7 +93,7 @@ make.waterheating <- function(shcs,path.to.input,path.to.output) {
   the.mainheatingfuel <- wh.main.heatingfuel(waterheating$M18
                                              ,waterheating$spaceheatingmainfuel
                                              ,waterheating$withcentralheating)
-  the.solarhotwaterpresent <- solar.hotwaterpresent(waterheating$D9)
+  the.solarhotwaterpresent <- solar.hotwaterpresent(as.numeric(as.character(waterheating$D9)))
   the.solarstoreincylinder <- solar.storeincylinder(the.solarhotwaterpresent
                                                     ,the.cylindervolume)
   the.solarstorevolume <- solar.storevolume(the.solarhotwaterpresent

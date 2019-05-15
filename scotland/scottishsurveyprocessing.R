@@ -21,6 +21,33 @@ clean.survey <- function(shcs){
   #should not be altered.
   shcs <- subset(shcs,is.na(shcs$year)=="FALSE")
   
+  
+  #number of rooms is a factor in the read in and has 'missing' and 'unknown' factors
+  #J1 needs converting into numeric for the living area calculation function and for 
+  #these latter to levels to be converted into 88 and 99 respectively.
+  #NAs are converted to 'Unobtainable' values.
+  #table(shcs$J1)
+  shcs$J1 <- as.character(shcs$J1)
+  shcs$J1 <- case_when(shcs$J1 == "Not applicable" ~ "88",
+                       shcs$J1 == "Unobtainable" ~ "99",
+                       TRUE ~ shcs$J1)
+  shcs$J1 <- ifelse(is.na(shcs$J1), "99", shcs$J1)
+  shcs$J1 = as.numeric(shcs$J1)
+  #table(shcs$J1, useNA = "ifany")
+  
+  #need to convert M31 (cylinder insulation thickness) into numeric and unfactorise
+  shcs$M31 <- as.character(shcs$M31)
+  shcs$M31 <- case_when(shcs$M31 == "No HW Storage" ~ "888",
+                        shcs$M31 == "Unobtainable" ~ "999",
+                        TRUE ~ shcs$M31)
+  shcs$M31 <- as.numeric(shcs$M31)
+  
+  shcs$J2 <- as.numeric(as.character(shcs$J2))
+  shcs$J4 <- as.numeric(as.character(shcs$J4))
+  shcs$Q10 <- as.numeric(as.character(shcs$Q10))
+  
+  shcs$E7 <- as.character(shcs$E7)
+  
   #These cases have a second extension with area and external perimeter
   #variables, but a missing ceiling height.These have been filled with the
   #standard height of 2.4m
@@ -118,8 +145,9 @@ clean.survey <- function(shcs){
   #should have been 88 (not applicable). Both of these values have been set to 0 for
   #calculations during elevations. This number can be set to any integer between 0
   #and 10
+  shcs$Q47 <- as.numeric(as.character(shcs$Q47))
   shcs$Q47[shcs$Q47 == 55] <- 0 
-  shcs$Q47[shcs$Q47 == 88] <- 0 
+  shcs$Q47[is.na(shcs$Q47)] <- 0 
   
   #There are 22 cases which have no habitable floors (excluding room in roof)
   #for stock creation they have been given one floor - this value should not be
@@ -129,6 +157,10 @@ clean.survey <- function(shcs){
   #16 cases have missing entries (i.e. no levels) for floor ground floor type. These
   #should be set as 'unobtainable' and will then be allocated a ground floor type 
   #according to the grndfloor.type function defined in cases
-  shcs$N1_E[is.na(shcs$N1_E) == TRUE] <- "Unobtainable"
+  shcs$N1_E <- as.character(shcs$N1_E)
+  shcs$N1_E[is.na(shcs$N1_E)] <- "Unobtainable"
+  
+  shcs$C4 <- as.numeric(as.character(shcs$C4))
+  
   return(shcs)
 }
